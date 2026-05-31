@@ -4,13 +4,13 @@ from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
 from pyspark.sql import SparkSession
 
-args = getResolvedOptions(sys.argv, ["JOB_NAME", "input_path", "output_path"])
+args = getResolvedOptions(sys.argv, ["JOB_NAME", "input_path", "output_path", "warehouse_path"])
 
 spark = (
     SparkSession.builder
     .config("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions")
     .config("spark.sql.catalog.glue_iceberg", "org.apache.iceberg.spark.SparkCatalog")
-    .config("spark.sql.catalog.glue_iceberg.warehouse", args["output_path"])
+    .config("spark.sql.catalog.glue_iceberg.warehouse", args["warehouse_path"])
     .config("spark.sql.catalog.glue_iceberg.catalog-impl", "org.apache.iceberg.aws.glue.GlueCatalog")
     .getOrCreate()
 )

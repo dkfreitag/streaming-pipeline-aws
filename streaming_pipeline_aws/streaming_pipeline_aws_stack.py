@@ -222,6 +222,7 @@ class StreamingPipelineAwsStack(Stack):
                 "--datalake-formats": "iceberg",
                 "--input_path": bucket.s3_url_for_object("json/"),
                 "--output_path": bucket.s3_url_for_object("parquet/"),
+                "--warehouse_path": bucket.s3_url_for_object("iceberg/"),
                 "--job-bookmark-option": "job-bookmark-disable",
             },
             glue_version="4.0",
