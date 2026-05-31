@@ -31,6 +31,8 @@ class StreamingPipelineAwsStack(Stack):
         # create S3 bucket
         bucket = s3.Bucket(
             self, "RecordsBucket",
+            removal_policy=RemovalPolicy.DESTROY,
+            auto_delete_objects=True,
         )
 
         # create Kinesis Data Stream
@@ -96,6 +98,7 @@ class StreamingPipelineAwsStack(Stack):
         error_queue = sqs.Queue(
             self, "ErrorQueue",
             visibility_timeout=Duration.seconds(300),
+            removal_policy=RemovalPolicy.DESTROY,
         )
 
         # create a parameter for setting the email that will get the alert when the error threshold
@@ -110,6 +113,7 @@ class StreamingPipelineAwsStack(Stack):
         # this will send an email 
         alarm_topic = sns.Topic(
             self, "AlarmTopic",
+            removal_policy=RemovalPolicy.DESTROY,
         )
         alarm_topic.add_subscription(
             sns_subs.EmailSubscription(alarm_email.value_as_string)

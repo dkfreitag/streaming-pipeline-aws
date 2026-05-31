@@ -6,6 +6,11 @@
 **AI Usage:** I used DeepSeek V4 Pro to help me write the code for this project. All architecture/system design is my own. 
 
 ### What this project is:
+
+This is an end-to-end data pipeline for streaming data from an API REST endpoint to files in S3, which are then turned into a Parquet/Apache Iceberg table (data lake).
+
+All infrastructure is serverless, and the Kinesis Data Stream is set for on-demand mode so it scales automatically with increasing data volume.
+
 This repo contains a CloudFormation Stack that spins up the following:
 
 - An HTTP API (**API Gateway**) with bearer-token auth (**Lambda function**) that accepts JSON records via POST requests
@@ -116,4 +121,14 @@ aws sqs receive-message \
   --max-number-of-messages 10 \
   --visibility-timeout 30 \
   --wait-time-seconds 5
+```
+
+### Teardown
+The various AWS resources whose removal policy does not default to "DESTROY" have been updated so they are destroyed when you run `cdk destroy`.
+
+One exception is the Glue Data Catalog entires, since these are not created with CloudFormation code--they are created by the Glue job itself.
+
+Destroy all infrastructure:
+```
+cdk destroy
 ```
