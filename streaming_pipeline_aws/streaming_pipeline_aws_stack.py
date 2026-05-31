@@ -3,6 +3,7 @@ from aws_cdk import (
     CfnOutput,
     CfnParameter,
     Duration,
+    RemovalPolicy,
     Stack,
     aws_cloudwatch as cloudwatch,
     aws_cloudwatch_actions as cw_actions,
@@ -35,6 +36,8 @@ class StreamingPipelineAwsStack(Stack):
         # create Kinesis Data Stream
         stream = kinesis.Stream(
             self, "RecordsStream",
+            removal_policy=RemovalPolicy.DESTROY,
+            stream_mode=kinesis.StreamMode.ON_DEMAND,
         )
 
         # create Firehose IAM Role
