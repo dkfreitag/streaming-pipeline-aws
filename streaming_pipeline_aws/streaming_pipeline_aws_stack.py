@@ -113,8 +113,8 @@ class StreamingPipelineAwsStack(Stack):
         # this will send an email 
         alarm_topic = sns.Topic(
             self, "AlarmTopic",
-            removal_policy=RemovalPolicy.DESTROY,
         )
+        alarm_topic.apply_removal_policy(RemovalPolicy.DESTROY)
         alarm_topic.add_subscription(
             sns_subs.EmailSubscription(alarm_email.value_as_string)
         )
